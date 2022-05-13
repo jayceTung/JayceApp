@@ -1,0 +1,13 @@
+//global config properties
+ext {
+    //sdk versions
+    minSdkVersion = 24
+    targetSdkVersion = 31
+    compileSdkVersion = 31
+    buildToolsVersion = "30.0.2"
+
+    versionCode = 1
+    versionName = "1.0"
+    jdkVersion = JavaVersion.VERSION_1_8
+    jvmTargetVerison = '1.8'
+}

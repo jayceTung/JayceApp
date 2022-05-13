@@ -1,0 +1,20 @@
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.jdkVersion
+        targetCompatibility rootProject.ext.jdkVersion
+    }
+    kotlinOptions {
+        jvmTarget = rootProject.ext.jvmTargetVerison
+    }
+}
