@@ -1,0 +1,96 @@
+@startuml
+Enum MeetingUiMode {
+    PREVIEW,
+    GALLERY,
+    ACTIVE_SPEAKER,
+    SHARING_CONTENT,
+    HDMI_SHARING,
+    FILM_STRIP
+}
+
+Enum EMeetingLayoutType {
+    NONE,
+    GALLERY_VIEW,
+    ACTIVE_SPEAKER_VIEW,
+    CONTENT_ONLY_VIEW,
+    FILM_STRIP_VIEW
+}
+
+class FilmStripFragment {
+    void onViewCreated(view: View, savedInstanceState: Bundle)
+}
+
+interface IFilmStripView {
+    void showRaiseHandPermissionChanged(shouldShow: Boolean)
+    void renderLocalParticipant(participant: IParticipant)
+    void renderBottomView(participants: List<IParticipant>, isItemAnimationEnabled: Boolean)
+    void renderSpeakingParticipant(participant: IParticipant?)
+    void renderMainVideo(participant: IParticipant?)
+    void startShareView()
+    void stopShareView()
+}
+
+FilmStripFragment -down-^ AbstractBaseFragment
+IFilmStripView .down.^ IUIView
+
+FilmStripFragment *-down- FilmStripPresenter
+FilmStripFragment *-down- IBaseGalleryAdapter
+FilmStripFragment *-down- IRoomGalleryVideoView
+FilmStripFragment *-down- MeetingIndicatorView
+FilmStripFragment *-down- MeetingWatermarkView
+FilmStripFragment *-down- FilmStripSpeakerView
+FilmStripFragment *-down- SharingContentView
+FilmStripFragment *-down- FilmLayoutManager
+FilmStripFragment .down.^ IFilmStripView
+
+class FilmStripPresenter {
+    void init()
+}
+
+FilmStripPresenter *-down- IMeetingLayoutConfigDelegate
+FilmStripPresenter *-down- ISpeakingIndicatorUiController
+FilmStripPresenter *-down- IActiveMeetingUiController
+FilmStripPresenter *-down- IRoomsHostFilmStripVideoSpeakerListUiController
+FilmStripPresenter *-down- IFilmStripUiController
+FilmStripPresenter *-down- IActiveSpeakerUiController
+FilmStripPresenter *-down- ScreenSharingListener
+FilmStripPresenter <.. IFilmStripView
+
+class IMeetingLayoutConfigDelegate {
+    void onShowAllParticipantsChanged(isShowAllParticipants: Boolean,
+        controller: IMeetingLayoutConfigUiController?)
+}
+
+abstract ISpeakingIndicatorUiController {
+    void setDelegate(ISpeakingIndicatorDelegate var1)
+}
+
+abstract IRoomsHostFilmStripVideoSpeakerListUiController {
+    void setPageSize(int var1)
+    void setPageIndex(int var1)
+    setDelegate(IRoomSpeakerListDelegate var1)
+    void load()
+}
+
+abstract IFilmStripUiController {
+    void setPageSize(int var1)
+    void setPageIndex(int var1)
+    void setDelegate(IRoomSpeakerListDelegate var1)
+    void load()
+}
+
+abstract IActiveSpeakerUiController {
+    void setDelegate(IActiveSpeakerDelegate var1)
+    boolean isActiveSpeakerViewReady()
+    IParticipant getActiveSpeaker()
+}
+
+class ScreenSharingListener {
+    void onScreenSharingStarted(viewModel: IScreenSharingViewModel)
+    void onScreenSharingUpdated(viewModel: IScreenSharingViewModel)
+    onScreenSharingStopped()
+}
+
+
+
+@enduml

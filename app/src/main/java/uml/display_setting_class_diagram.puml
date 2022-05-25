@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class IDisplayInfo {
+    String getSlotId()
+    String getId()
+    setSlotId(String slotId)
+    setId(String id)
+    String getName()
+    setName(String name)
+}
+
+abstract class IMultipleDisplaysDelegate {
+    void onUpdateDisplayInfo(IMultipleDisplaysUiController var1, EMultipleDisplaysAction var2);
+}
+
+abstract class IMultipleDisplaysUiController {
+    void updateDisplayInfos(ArrayList<IDisplayInfo> infos)
+    void swap()
+    void setDelegate(IMultipleDisplaysDelegate delegate)
+}
+
+class MultiDisplayService {
+    void onDisplayAdded(displayId: Int)
+    void onDisplayRemoved(displayId: Int)
+    void updateDisplayInfos()
+}
+
+
+enum EMultipleDisplaysAction {
+    REQUEST_DISPLAY_INFO,
+    ENTER_MULTIPLE_DISPLAY,
+    LEAVE_MULTIPLE_DISPLAY,
+    SWAP_MULTIPLE_DISPLAY,
+    UPDATE_DISPLAY_INFO;
+}
+
+enum MultiDisplayChangeType {
+    ADD,
+    REMOVE,
+    SWAP
+}
+
+IMultipleDisplaysUiController ..> IDisplayInfo
+IMultipleDisplaysUiController ..> IMultipleDisplaysDelegate
+MultiDisplayService *-- IMultipleDisplaysUiController
+MultiDisplayService *-- IMultipleDisplaysDelegate
+
+@enduml

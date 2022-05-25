@@ -1,0 +1,48 @@
+@startuml
+box "controller" #fff
+participant ControllerGeneralSettingPresenter
+end box
+box "rcv" #fff
+participant IScheduledMeetingUiController
+participant IScheduledMeetingDelegate
+participant IRoomIncomingVideoCallUiController
+participant IRoomsSettingsUiController
+participant IRoomsSettingsDelegate
+participant IRoomIncomingVideoCallDelegate
+end box
+box "RMX" #fff
+participant RMX
+end box
+
+ControllerGeneralSettingPresenter -> IScheduledMeetingUiController: updateAutoStartSetting(check: Boolean)
+IScheduledMeetingUiController -> RMX: setAutoStartScheduledMeeting(boolean autoStart)
+IScheduledMeetingDelegate -> ControllerGeneralSettingPresenter: onAutoStartMeetingSettingUpdate(boolean autoStart)
+ControllerGeneralSettingPresenter -> IScheduledMeetingUiController: updateAutoStopSetting(check: Boolean)
+IScheduledMeetingUiController -> RMX: setAutoStopScheduledMeeting(boolean autoStop)
+IScheduledMeetingDelegate -> ControllerGeneralSettingPresenter: onAutoStopMeetingSettingUpdate(boolean autoStop)
+
+ControllerGeneralSettingPresenter -> IRoomIncomingVideoCallUiController: updateIncomingVideoAutoAcceptSetting(check: Boolean)
+IRoomIncomingVideoCallUiController -> RMX: setAutoAccept(boolean var1)
+IRoomIncomingVideoCallDelegate -> ControllerGeneralSettingPresenter: onVideoCallAutoAccept()
+ControllerGeneralSettingPresenter -> IRoomIncomingVideoCallUiController: updateIncomingVideoDndSetting(check: Boolean)
+IRoomIncomingVideoCallUiController -> RMX: setDoNotDisturb(boolean var1)
+IRoomIncomingVideoCallDelegate -> ControllerGeneralSettingPresenter: onDoNotDisturbUpdated(boolean doNotDisturb)
+
+ControllerGeneralSettingPresenter -> IRoomsSettingsUiController: updateHideMeetingTitleSetting(check: Boolean)
+IRoomsSettingsUiController -> RMX: setDisplayAsPrivateMeeting(boolean var1)
+IRoomsSettingsDelegate -> ControllerGeneralSettingPresenter: onUpdate()
+ControllerGeneralSettingPresenter -> IRoomsSettingsDelegate: getViewModel()
+ControllerGeneralSettingPresenter -> IRoomsSettingsUiController: updateHideMeetingHostSetting(check: Boolean)
+IRoomsSettingsUiController -> RMX: setHideHostNameForPrivateMeetings(boolean var1)
+IRoomsSettingsDelegate -> ControllerGeneralSettingPresenter: onUpdate()
+ControllerGeneralSettingPresenter -> IRoomsSettingsDelegate: getViewModel()
+ControllerGeneralSettingPresenter -> IRoomsSettingsUiController: updateMeetingFeedbackOn(check: Boolean)
+IRoomsSettingsUiController -> RMX: setMeetingFeedbackOn(boolean var1)
+IRoomsSettingsDelegate -> ControllerGeneralSettingPresenter: onUpdate()
+ControllerGeneralSettingPresenter -> IRoomsSettingsDelegate: getViewModel()
+ControllerGeneralSettingPresenter -> IRoomsSettingsUiController: updateWelcomeMessageOn(check: Boolean)
+IRoomsSettingsUiController -> RMX: setWelcomeMessageOn(boolean var1)
+IRoomsSettingsDelegate -> ControllerGeneralSettingPresenter: onUpdate()
+ControllerGeneralSettingPresenter -> IRoomsSettingsDelegate: getViewModel()
+
+@enduml

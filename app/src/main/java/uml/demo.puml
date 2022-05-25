@@ -1,0 +1,73 @@
+@startuml
+header Closed Captions (Windows Platform)
+box "Controller" #fff
+
+participant MeetingClosedCaptionsPresenter
+
+end box
+box "RCV SDK" #fff
+participant IClosedCaptionsListener
+participant RoomsSettingUiController
+participant ClosedCaptionUIController
+
+ClosedCaptionUIController->ClosedCaptionsListener: setDelegate
+RoomsSettingUiController->RoomsSettingsDelegate: setDelegate
+HostClosedCaptionsViewController->ClosedCaptionsListener: addClosedCaptionsListener
+
+
+MeetingClosedCaptionsPresenter->RoomsSettingUiController:updateCaptionsStatus()
+
+RoomsSettingUiController -> RoomsSettingsDelegate: onUpdate
+RoomsSettingsDelegate -> ClosedCaptionUIController: enableClosedCaptions/disableClosedCaptions
+ClosedCaptionUIController -> ClosedCaptionUIController: createChannel
+ClosedCaptionUIController --> IClosedCaptionsListener: onEnableCc/onDisableCc
+
+IClosedCaptionsListener -> ClosedCaptionsListener : onEnableCc
+IClosedCaptionsListener -> ClosedCaptionsListener : onDisableCc
+ClosedCaptionsListener -> HostClosedCaptionsViewController : onCcStateChange(true/false)
+HostClosedCaptionsViewController -> HostClosedCaptionsView : onCcStateChange(true/false)
+HostClosedCaptionsView -> HostClosedCaptionsView : ShowCc/HideCc
+
+ClosedCaptionsListener -> RoomsSettingUiController: SendError
+RoomsSettingUiController -> MeetingClosedCaptionsPresenter: SendError
+
+
+IClosedCaptionsListener -> ClosedCaptionsDelegate : onCcEvent
+ClosedCaptionsDelegate -> ClosedCaptionsListener : onCcEvent
+ClosedCaptionsListener -> HostClosedCaptionsViewController : onCcEvent
+HostClosedCaptionsViewController -> HostClosedCaptionsView : setData(event)
+HostClosedCaptionsView -> HostClosedCaptionsView : UpdateCcContent
+
+
+MeetingClosedCaptionsPresenter->RoomsSettingUiController: setCcLayoutType
+MeetingClosedCaptionsPresenter->RoomsSettingUiController: setCcFontSize
+
+
+
+RoomsSettingsDelegate -> ClosedCaptionsListener : onCcSettingUpdate
+ClosedCaptionsListener -> HostClosedCaptionsViewController : onCcSettingUpdate
+HostClosedCaptionsViewController -> HostClosedCaptionsView : CcLayout
+HostClosedCaptionsView -> HostClosedCaptionsView : UpdateCcLayout
+HostClosedCaptionsViewController -> HostClosedCaptionsView : CcFontSize
+HostClosedCaptionsView -> HostClosedCaptionsView : updateTextSize
+end box
+
+
+
+box "inMeetingService" #fff
+
+participant RoomsSettingsDelegate
+participant ClosedCaptionsListener
+
+
+end box
+
+box "ActiveMeetingActivity" #fff
+
+participant HostClosedCaptionsViewController
+participant HostClosedCaptionsView
+
+end box
+
+
+@enduml

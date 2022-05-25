@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ControllerSwapMonitorsTileFragment
+class DisplaysSwapViewController
+class DisplaysSwapPresenter {
+    void loadMonitorsIndicator()
+}
+abstract class IMultipleDisplaysUiController {
+    void updateDisplayInfos(ArrayList<IDisplayInfo> infos)
+    void swap()
+    void setDelegate(IMultipleDisplaysDelegate delegate)
+}
+abstract class IMultipleDisplaysDelegate {
+    void onError(IMultipleDisplaysUiController var1, EMultipleDisplaysAction var2, IMeetingError var3)
+    void onUpdateDisplayInfo(IMultipleDisplaysUiController var1, EMultipleDisplaysAction var2)
+    void onLoadDisplayInfo(IMultipleDisplaysUiController var1, IMultipleDisplaysViewModel var2)
+}
+
+DisplaysSwapPresenter *-- IMultipleDisplaysUiController
+DisplaysSwapPresenter *-- IMultipleDisplaysDelegate
+IMultipleDisplaysUiController ..> IMultipleDisplaysDelegate
+ControllerSwapMonitorsTileFragment *-- DisplaysSwapViewController
+DisplaysSwapViewController *-- DisplaysSwapPresenter
+
+@enduml

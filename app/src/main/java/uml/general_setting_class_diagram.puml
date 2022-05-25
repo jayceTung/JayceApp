@@ -1,0 +1,98 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ControllerGeneralSettingFragment
+class ControllerGeneralSettingPresenter
+
+abstract class IRoomSettingsUiController {
+    void setDelegate(IRoomsSettingsDelegate var1)
+    IRoomsSettingsViewModel getViewModel()
+    void setDisplayAsPrivateMeeting(boolean var1)
+    void setHideHostNameForPrivateMeetings(boolean var1)
+    boolean isMeetingFeedbackOn()
+    void setMeetingFeedbackOn(boolean var1)
+}
+
+abstract class IRoomIncomingVideoCallUiController {
+    void setDelegate(IRoomIncomingVideoCallDelegate var1)
+    void setAutoAccept(boolean var1)
+    void setDoNotDisturb(boolean var1)
+    boolean getDoNotDisturb()
+    boolean getAutoAccept()
+}
+
+abstract class IScheduledMeetingUiController {
+    void setDelegate(IScheduledMeetingDelegate var1)
+    void setAutoStartScheduledMeeting(boolean var1)
+    void setAutoStopScheduledMeeting(boolean var1)
+    boolean getAutoStartScheduledMeeting()
+    boolean getAutoStopScheduledMeeting()
+}
+
+abstract class IRoomsSettingsDelegate {
+    void onSyncUpSettings(IMeetingError var1)
+    void onUpdate()
+}
+
+abstract class IRoomIncomingVideoCallDelegate {
+    void onIncomingVideoCall()
+    void onVideoCallTimeoutOrReject()
+    void onVideoCallAutoAcceptIn(int seconds)
+    void onVideoCallAutoAccept()
+    void onVideoCallAutoRejected(EAutoRejectReason reason)
+    onDoNotDisturbUpdated(boolean doNotDisturb)
+}
+
+abstract class IScheduledMeetingDelegate {
+    void onAutoStartMeetingSettingUpdate(boolean autoStart)
+    void onAutoStopMeetingSettingUpdate(boolean autoStop)
+    void onMeetingWillStartIn(int seconds, String meetingId)
+    void onMeetingStart(AutoStartMeetingEvent event)
+    void onMeetingWillStopIn(int seconds)
+    void onMeetingStop()
+}
+
+abstract class IRoomsSettingsViewModel {
+    boolean isDisplayAsPrivateMeetingOn()
+    boolean isHideHostNameForPrivateMeetingsOn()
+    boolean isMeetingFeedbackOn()
+    boolean isWelcomeMessageOn()
+}
+
+interface IControllerGeneralSettingView {
+    void updateMeetingAutoStartOption(isChecked:Boolean)
+    void updateMeetingAutoStopOption(isChecked:Boolean)
+    void updateInComingMeetingAutoAcceptOption(isChecked:Boolean)
+    void updateDoNotDisturbOption(isChecked:Boolean)
+    void updateMeetingWelcomeOption(isSilent: Boolean)
+    void updateHideMeetingTitleOption(isChecked: Boolean)
+    void updateHideMeetingHostOption(isChecked: Boolean)
+    void updateFeedbackOption(isChecked: Boolean)
+}
+
+IControllerGeneralSettingView .up.^ IUIView
+
+
+ControllerGeneralSettingFragment .up.^ IControllerGeneralSettingView
+ControllerGeneralSettingFragment *-- ControllerGeneralSettingPresenter
+ControllerGeneralSettingPresenter *-- IRoomSettingsUiController
+ControllerGeneralSettingPresenter *-- IRoomIncomingVideoCallUiController
+ControllerGeneralSettingPresenter *-- IScheduledMeetingUiController
+ControllerGeneralSettingPresenter *-- IRoomsSettingsDelegate
+ControllerGeneralSettingPresenter *-- IRoomIncomingVideoCallDelegate
+ControllerGeneralSettingPresenter *-- IScheduledMeetingDelegate
+ControllerGeneralSettingPresenter ..> IControllerGeneralSettingView
+IRoomSettingsUiController ..> IRoomsSettingsViewModel
+
+enum FieldId {
+    MEETING_FEEDBACK_ID
+    MEETING_AUTO_START_ID
+    MEETING_AUTO_STOP_ID
+    MEETING_AUTO_ACCEPT_VIDEO_CALL_ID
+    HIDE_MEETING_TITLE
+    HIDE_MEETING_HOST
+    DO_NOT_DISTURB_DURING_MEETING_ID
+    WELCOME_MESSAGE_ID
+}
+
+@enduml

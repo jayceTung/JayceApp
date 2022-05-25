@@ -1,0 +1,14 @@
+@startuml
+
+PlatformManager -> HostCameraService: onCameraCapabilityUpdated
+HostCameraService -> InMeetingService: onHdmiCameraAdded()
+InMeetingService -> IActiveSharingUiController: startSharing()
+InMeetingService <-- IActiveSharingUiController: onCreateCameraSharingVideoTrack()
+InMeetingService -> MultiDisplayModeController: onHdmiSharingStarted()
+MultiDisplayModeController -> ActiveMeetingActivity: switchUiMode(MeetingUiMode.HDMI_SHARING)
+ActiveMeetingActivity -> HdmiSharingFragment: onCreate()
+HdmiSharingFragment -> InMeetingService: getHdmiSharingViewModel()
+HdmiSharingFragment <-- InMeetingService: IVideoStreamTrack
+HdmiSharingFragment -> HdmiSharingFragment: startRenderLocalStream()
+
+@enduml
