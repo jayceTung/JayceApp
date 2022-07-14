@@ -16,3 +16,4 @@ rootProject.name = "JayceApp"
 include ':app'
 include ':uiweight'
 include ':common'
+include ':log'
