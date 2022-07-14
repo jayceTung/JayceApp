@@ -258,16 +258,7 @@ public class JLog {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 
         StackTraceElement targetElement = stackTrace[stackTraceIndex];
-        String className = targetElement.getClassName();
-        String[] classNameInfo = className.split("\\.");
-        if (classNameInfo.length > 0) {
-            className = classNameInfo[classNameInfo.length - 1] + SUFFIX;
-        }
-
-        if (className.contains("$")) {
-            className = className.split("\\$")[0] + SUFFIX;
-        }
-
+        String className = targetElement.getFileName();
         String methodName = targetElement.getMethodName();
         int lineNumber = targetElement.getLineNumber();
 
